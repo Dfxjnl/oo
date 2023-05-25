@@ -22,8 +22,12 @@ find_package(fmt CONFIG REQUIRED)
 # Declare library.
 add_library(
   oo_lib OBJECT
+  src/dimension.hpp
   src/game.cpp
   src/game.hpp
+  src/point.hpp
+  src/terminal.cpp
+  src/terminal.hpp
 )
 
 target_compile_features(oo_lib PUBLIC cxx_std_20)
@@ -34,7 +38,7 @@ target_include_directories(
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
 )
 
-target_link_libraries(oo_lib PRIVATE fmt::fmt)
+target_link_libraries(oo_lib PUBLIC fmt::fmt)
 
 # Declare executable.
 add_executable(oo_exe src/main.cpp)
