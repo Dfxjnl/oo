@@ -4,7 +4,8 @@
 
 auto main() -> int
 {
-    [[maybe_unused]] const oo::Game game;
+    oo::Game game;
+    game.run();
 
     return EXIT_SUCCESS;
 }

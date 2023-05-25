@@ -2,6 +2,7 @@
 
 #include <doctest/doctest.h>
 
+#include <algorithm>
 #include <cstddef>
 #include <stdexcept>
 #include <string>
@@ -15,6 +16,14 @@ TEST_CASE("Terminal")
 
     constexpr oo::Dimension dimension {10, 5};
     oo::Terminal terminal {dimension};
+
+    SUBCASE("Clearing the terminal")
+    {
+        terminal.clear();
+
+        CHECK(
+            std::ranges::all_of(terminal.glyphs(), [](const char glyph) { return glyph == ' '; }));
+    }
 
     SUBCASE("Writing a character at a position")
     {

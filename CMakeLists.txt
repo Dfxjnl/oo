@@ -18,6 +18,8 @@ endif()
 
 # Dependencies.
 find_package(fmt CONFIG REQUIRED)
+find_package(SDL2 CONFIG REQUIRED)
+find_package(SDL2_image CONFIG REQUIRED)
 
 # Declare library.
 add_library(
@@ -25,7 +27,10 @@ add_library(
   src/dimension.hpp
   src/game.cpp
   src/game.hpp
+  src/graphics_backend.hpp
   src/point.hpp
+  src/sdl_backend.cpp
+  src/sdl_backend.hpp
   src/terminal.cpp
   src/terminal.hpp
 )
@@ -38,7 +43,13 @@ target_include_directories(
   "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>"
 )
 
-target_link_libraries(oo_lib PUBLIC fmt::fmt)
+target_link_libraries(oo_lib
+  PRIVATE
+  $<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
+  $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
+  $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
+  PUBLIC
+  fmt::fmt)
 
 # Declare executable.
 add_executable(oo_exe src/main.cpp)
@@ -46,6 +57,16 @@ add_executable(oo::exe ALIAS oo_exe)
 set_target_properties(oo_exe PROPERTIES OUTPUT_NAME oo)
 target_compile_features(oo_exe PRIVATE cxx_std_20)
 target_link_libraries(oo_exe PRIVATE oo_lib)
+
+add_custom_command(
+  TARGET oo_exe
+  POST_BUILD
+  COMMAND
+  ${CMAKE_COMMAND} -E create_symlink
+  "$<TARGET_PROPERTY:oo_exe,SOURCE_DIR>/data"
+  "$<TARGET_PROPERTY:oo_exe,BINARY_DIR>/data"
+  VERBATIM
+)
 
 # Developer mode.
 if(NOT oo_DEVELOPER_MODE)

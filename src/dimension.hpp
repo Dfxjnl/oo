@@ -12,6 +12,11 @@ struct Dimension
     int width {0};
     int height {0};
 };
+
+constexpr auto operator/(const Dimension lhs, const int rhs) noexcept -> Dimension
+{
+    return {lhs.width / rhs, lhs.height / rhs};
+}
 } // namespace oo
 
 template <>

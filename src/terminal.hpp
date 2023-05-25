@@ -1,6 +1,7 @@
 #ifndef OO_TERMINAL_HPP
 #define OO_TERMINAL_HPP
 
+#include <algorithm>
 #include <cstddef>
 #include <string_view>
 #include <vector>
@@ -16,8 +17,10 @@ public:
     constexpr explicit Terminal(const Dimension dimension)
         : m_dimension {dimension}
     {
-        m_glyphs.resize(static_cast<std::size_t>(dimension.area()), {' '});
+        m_glyphs.resize(static_cast<std::size_t>(dimension.area()), ' ');
     }
+
+    constexpr void clear() noexcept { std::ranges::fill(m_glyphs, ' '); }
 
     void write(Point position, char character);
     void write(Point position, std::string_view text);

@@ -2,7 +2,9 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "oo",
   "dependencies": [
-    "fmt"
+    "fmt",
+    "sdl2",
+    "sdl2-image"
   ],
   "features": {
     "test": {
