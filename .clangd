@@ -1,0 +1,11 @@
+CompileFlags:
+  CompilationDatabase: build/clang-debug
+
+Diagnostics:
+  UnusedIncludes: Strict
+  
+InlayHints:
+  Enabled: Yes
+
+Hover:
+  ShowAKA: Yes

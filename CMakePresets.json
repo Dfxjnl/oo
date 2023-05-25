@@ -1,0 +1,465 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "common",
+      "hidden": true,
+      "generator": "Ninja",
+      "toolchainFile": "${sourceDir}/external/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "CMAKE_COLOR_DIAGNOSTICS": "ON",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_LINK_WHAT_YOU_USE": "ON",
+        "VCPKG_MANIFEST_FEATURES": "test",
+        "oo_DEVELOPER_MODE": "ON"
+      }
+    },
+    {
+      "name": "gcc-debug",
+      "displayName": "GCC Debug",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "inherits": "common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Werror=float-equal -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor -Wold-style-cast -Wuseless-cast"
+      },
+      "environment": {
+        "CXX": "c++"
+      }
+    },
+    {
+      "name": "gcc-relwithdebinfo",
+      "displayName": "GCC RelWithDebInfo",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "inherits": "common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_CXX_FLAGS": "-fstack-protector-strong -fcf-protection=full -fstack-clash-protection -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Werror=float-equal -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor -Wold-style-cast -Wuseless-cast",
+        "CMAKE_EXE_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now",
+        "CMAKE_SHARED_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now"
+      },
+      "environment": {
+        "CXX": "c++"
+      }
+    },
+    {
+      "name": "gcc-sanitize",
+      "displayName": "GCC Sanitizer",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "inherits": "gcc-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Sanitize",
+        "CMAKE_CXX_FLAGS_SANITIZE": "-O2 -g -fsanitize=address,leak,undefined -fno-omit-frame-pointer -fno-common",
+        "CMAKE_MAP_IMPORTED_CONFIG_SANITIZE": "Sanitize;RelWithDebInfo;Release;Debug;"
+      }
+    },
+    {
+      "name": "gcc-release",
+      "displayName": "GCC Debug",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "inherits": "common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS": "-D_FORTIFY_SOURCE=3 -fstack-protector-strong -fcf-protection=full -fstack-clash-protection -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Werror=float-equal -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor -Wold-style-cast -Wuseless-cast",
+        "CMAKE_EXE_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now",
+        "CMAKE_SHARED_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now"
+      },
+      "environment": {
+        "CXX": "c++"
+      }
+    },
+    {
+      "name": "clang-debug",
+      "displayName": "Clang Debug",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "inherits": "common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Werror=float-equal -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor -Wold-style-cast"
+      },
+      "environment": {
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "clang-relwithdebinfo",
+      "displayName": "Clang Debug",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "inherits": "common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_CXX_FLAGS": "-fstack-protector-strong -fcf-protection=full -fstack-clash-protection -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Werror=float-equal -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor -Wold-style-cast",
+        "CMAKE_EXE_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now",
+        "CMAKE_SHARED_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now"
+      },
+      "environment": {
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "clang-sanitize",
+      "displayName": "Clang Sanitizer",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "inherits": "clang-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Sanitize",
+        "CMAKE_CXX_FLAGS_SANITIZE": "-O2 -g -fsanitize=address,leak,undefined -fno-omit-frame-pointer -fno-common",
+        "CMAKE_MAP_IMPORTED_CONFIG_SANITIZE": "Sanitize;RelWithDebInfo;Release;Debug;"
+      }
+    },
+    {
+      "name": "clang-release",
+      "displayName": "Clang Debug",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "inherits": "common",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS": "-D_FORTIFY_SOURCE=3 -fstack-protector-strong -fcf-protection=full -fstack-clash-protection -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Werror=float-equal -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor -Wold-style-cast",
+        "CMAKE_EXE_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now",
+        "CMAKE_SHARED_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now"
+      },
+      "environment": {
+        "CXX": "clang++"
+      }
+    },
+    {
+      "name": "static-analyzers",
+      "displayName": "Static analyzers",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "inherits": "clang-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_CLANG_TIDY": "clang-tidy;--use-color",
+        "CMAKE_CXX_CPPCHECK": "cppcheck;--enable=all;--inconclusive;--suppress=missingIncludeSystem;--suppress=unmatchedSuppression;--suppress=unusedFunction;--suppress=functionConst;--suppress=unusedPrivateFunction"
+      }
+    },
+    {
+      "name": "include-what-you-use",
+      "displayName": "Run include-what-you-use",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "inherits": "clang-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_FLAGS": "",
+        "CMAKE_CXX_INCLUDE_WHAT_YOU_USE": "include-what-you-use;-Xiwyu;--mapping_file=${sourceDir}/tools/iwyu/gcc.stdlib.imp;-Xiwyu;--cxx17ns;-fdiagnostics-color"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "gcc-debug",
+      "configurePreset": "gcc-debug",
+      "jobs": 12
+    },
+    {
+      "name": "gcc-relwithdebinfo",
+      "configurePreset": "gcc-relwithdebinfo",
+      "jobs": 12
+    },
+    {
+      "name": "gcc-sanitize",
+      "configurePreset": "gcc-sanitize",
+      "jobs": 12
+    },
+    {
+      "name": "gcc-release",
+      "configurePreset": "gcc-release",
+      "jobs": 12
+    },
+    {
+      "name": "clang-debug",
+      "configurePreset": "clang-debug",
+      "jobs": 12
+    },
+    {
+      "name": "clang-relwithdebinfo",
+      "configurePreset": "clang-relwithdebinfo",
+      "jobs": 12
+    },
+    {
+      "name": "clang-sanitize",
+      "configurePreset": "clang-sanitize",
+      "jobs": 12
+    },
+    {
+      "name": "clang-release",
+      "configurePreset": "clang-release",
+      "jobs": 12
+    },
+    {
+      "name": "static-analyzers",
+      "configurePreset": "static-analyzers",
+      "jobs": 12
+    },
+    {
+      "name": "include-what-you-use",
+      "configurePreset": "include-what-you-use",
+      "jobs": 12
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "gcc-debug",
+      "configurePreset": "gcc-debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 12
+      }
+    },
+    {
+      "name": "gcc-relwithdebinfo",
+      "configurePreset": "gcc-relwithdebinfo",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 12
+      }
+    },
+    {
+      "name": "gcc-sanitize",
+      "configurePreset": "gcc-sanitize",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 12
+      }
+    },
+    {
+      "name": "gcc-release",
+      "configurePreset": "gcc-release",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 12
+      }
+    },
+    {
+      "name": "clang-debug",
+      "configurePreset": "clang-debug",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 12
+      }
+    },
+    {
+      "name": "clang-relwithdebinfo",
+      "configurePreset": "clang-relwithdebinfo",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 12
+      }
+    },
+    {
+      "name": "clang-sanitize",
+      "configurePreset": "clang-sanitize",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 12
+      }
+    },
+    {
+      "name": "clang-release",
+      "configurePreset": "clang-release",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 12
+      }
+    },
+    {
+      "name": "static-analyzers",
+      "configurePreset": "static-analyzers",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 12
+      }
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "gcc-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "gcc-debug"
+        },
+        {
+          "type": "build",
+          "name": "gcc-debug"
+        },
+        {
+          "type": "test",
+          "name": "gcc-debug"
+        }
+      ]
+    },
+    {
+      "name": "gcc-relwithdebinfo",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "gcc-relwithdebinfo"
+        },
+        {
+          "type": "build",
+          "name": "gcc-relwithdebinfo"
+        },
+        {
+          "type": "test",
+          "name": "gcc-relwithdebinfo"
+        }
+      ]
+    },
+    {
+      "name": "gcc-sanitize",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "gcc-sanitize"
+        },
+        {
+          "type": "build",
+          "name": "gcc-sanitize"
+        },
+        {
+          "type": "test",
+          "name": "gcc-sanitize"
+        }
+      ]
+    },
+    {
+      "name": "gcc-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "gcc-release"
+        },
+        {
+          "type": "build",
+          "name": "gcc-release"
+        },
+        {
+          "type": "test",
+          "name": "gcc-release"
+        }
+      ]
+    },
+    {
+      "name": "clang-debug",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-debug"
+        },
+        {
+          "type": "build",
+          "name": "clang-debug"
+        },
+        {
+          "type": "test",
+          "name": "clang-debug"
+        }
+      ]
+    },
+    {
+      "name": "clang-relwithdebinfo",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-relwithdebinfo"
+        },
+        {
+          "type": "build",
+          "name": "clang-relwithdebinfo"
+        },
+        {
+          "type": "test",
+          "name": "clang-relwithdebinfo"
+        }
+      ]
+    },
+    {
+      "name": "clang-sanitize",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-sanitize"
+        },
+        {
+          "type": "build",
+          "name": "clang-sanitize"
+        },
+        {
+          "type": "test",
+          "name": "clang-sanitize"
+        }
+      ]
+    },
+    {
+      "name": "clang-release",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "clang-release"
+        },
+        {
+          "type": "build",
+          "name": "clang-release"
+        },
+        {
+          "type": "test",
+          "name": "clang-release"
+        }
+      ]
+    },
+    {
+      "name": "static-analyzers",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "static-analyzers"
+        },
+        {
+          "type": "build",
+          "name": "static-analyzers"
+        },
+        {
+          "type": "test",
+          "name": "static-analyzers"
+        }
+      ]
+    },
+    {
+      "name": "include-what-you-use",
+      "steps": [
+        {
+          "type": "configure",
+          "name": "include-what-you-use"
+        },
+        {
+          "type": "build",
+          "name": "include-what-you-use"
+        }
+      ]
+    }
+  ]
+}

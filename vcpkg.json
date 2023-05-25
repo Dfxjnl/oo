@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "oo",
+  "dependencies": [
+    "fmt"
+  ],
+  "features": {
+    "test": {
+      "description": "Dependencies for testing",
+      "dependencies": [
+        "doctest"
+      ]
+    }
+  },
+  "builtin-baseline": "0ccb3d11406922bef1dcc29002f68f633a321f19"
+}

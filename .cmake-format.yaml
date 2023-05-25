@@ -1,0 +1,5 @@
+format:
+  autosort: true
+  dangle_parens: true
+  line_width: 100
+  tab_size: 4
