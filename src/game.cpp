@@ -4,6 +4,7 @@
 #include <memory>
 #include <thread>
 
+#include "color.hpp"
 #include "sdl_backend.hpp"
 #include "terminal.hpp"
 
@@ -18,7 +19,7 @@ Game::Game()
 void Game::run()
 {
     m_terminal.clear();
-    m_terminal.write({0, 0}, "Hello world!");
+    m_terminal.write({0, 0}, "Hello world!", colors::red);
     m_backend->draw(m_terminal.glyphs());
 
     using namespace std::chrono_literals;

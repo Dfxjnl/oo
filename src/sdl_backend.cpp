@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_video.h>
 #include <fmt/core.h>
@@ -14,8 +15,10 @@
 #include <span>
 #include <stdexcept>
 
+#include "color.hpp"
 #include "dimension.hpp"
 #include "point.hpp"
+#include "terminal.hpp"
 
 namespace oo
 {
@@ -78,24 +81,37 @@ SDLBackend::~SDLBackend()
     SDL_Quit();
 }
 
-void SDLBackend::draw(const std::span<const char> screen)
+void SDLBackend::draw(const std::span<const Glyph> screen)
 {
     SDL_SetRenderDrawColor(m_renderer.get(), 0x00, 0x00, 0x00, 0xFF);
     SDL_RenderClear(m_renderer.get());
 
     const Dimension ascii_dimension {console_size()};
+    constexpr SDL_Rect background_source {88, 104, tile_size, tile_size};
 
     for (int y {0}; y < ascii_dimension.height; ++y) {
         for (int x {0}; x < ascii_dimension.width; ++x) {
             const Point screen_position {x * tile_size, y * tile_size};
-            const char target_character {
-                screen[static_cast<std::size_t>(y * ascii_dimension.width + x)]};
-            const Point texture_position {(target_character % (tile_size * 2)) * tile_size,
-                                          (target_character / (tile_size * 2)) * tile_size};
+            const auto glyph {screen[static_cast<std::size_t>(y * ascii_dimension.width + x)]};
+            const Point texture_position {(glyph.character % (tile_size * 2)) * tile_size,
+                                          (glyph.character / (tile_size * 2)) * tile_size};
 
             const SDL_Rect source {texture_position.x, texture_position.y, tile_size, tile_size};
             const SDL_Rect destination {screen_position.x, screen_position.y, tile_size, tile_size};
 
+            // Blit the background.
+            SDL_SetTextureColorMod(m_font_texture.get(),
+                                   static_cast<Uint8>(glyph.background.red),
+                                   static_cast<Uint8>(glyph.background.green),
+                                   static_cast<Uint8>(glyph.background.blue));
+            SDL_RenderCopy(
+                m_renderer.get(), m_font_texture.get(), &background_source, &destination);
+
+            // Blit the foreground.
+            SDL_SetTextureColorMod(m_font_texture.get(),
+                                   static_cast<Uint8>(glyph.foreground.red),
+                                   static_cast<Uint8>(glyph.foreground.green),
+                                   static_cast<Uint8>(glyph.foreground.blue));
             SDL_RenderCopy(m_renderer.get(), m_font_texture.get(), &source, &destination);
         }
     }

@@ -24,6 +24,7 @@ find_package(SDL2_image CONFIG REQUIRED)
 # Declare library.
 add_library(
   oo_lib OBJECT
+  src/color.hpp
   src/dimension.hpp
   src/game.cpp
   src/game.hpp

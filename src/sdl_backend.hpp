@@ -13,6 +13,8 @@
 
 namespace oo
 {
+struct Glyph;
+
 namespace sdl
 {
 struct SDLDeleter
@@ -39,7 +41,7 @@ public:
     auto operator=(SDLBackend&&) -> SDLBackend& = default;
     ~SDLBackend() override;
 
-    void draw(std::span<const char> screen) override;
+    void draw(std::span<const Glyph> screen) override;
 
     [[nodiscard]] constexpr auto console_size() const noexcept -> Dimension override
     {

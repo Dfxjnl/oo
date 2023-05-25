@@ -3,6 +3,7 @@
 #include <fmt/core.h>
 
 #include <cstddef>
+#include <functional>
 #include <source_location>
 #include <stdexcept>
 #include <string_view>
@@ -11,23 +12,29 @@
 
 namespace oo
 {
-void Terminal::write(const Point position, const char character)
+void Terminal::write(const Point position,
+                     const char character,
+                     const Color foreground,
+                     const Color background)
 {
-    m_glyphs.at(index(position)) = character;
+    m_glyphs.at(index(position)) = {character, foreground, background};
 }
 
-void Terminal::write(const Point position, const std::string_view text)
+void Terminal::write(const Point position,
+                     const std::string_view text,
+                     const Color foreground,
+                     const Color background)
 {
     for (std::size_t i {0}; i < text.size(); ++i) {
         if (position.x + static_cast<int>(i) >= m_dimension.width) {
             break;
         }
 
-        write({position.x + static_cast<int>(i), position.y}, text[i]);
+        write({position.x + static_cast<int>(i), position.y}, text[i], foreground, background);
     }
 }
 
-auto Terminal::read_at(const Point position) const -> char
+auto Terminal::read_at(const Point position) const -> const Glyph&
 {
     return m_glyphs.at(index(position));
 }
