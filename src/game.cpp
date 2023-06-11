@@ -20,6 +20,7 @@ namespace oo
 Game::Game()
     : m_backend {std::make_unique<SDLBackend>()}
     , m_terminal {m_backend->console_size()}
+    , m_map {m_backend->console_size()}
 {
     m_map.set_tile({5, 5}, TileType::Wall);
     m_map.set_tile({5, 6}, TileType::Wall);
@@ -55,8 +56,8 @@ void Game::render()
     m_terminal.clear();
 
     // Render the map.
-    for (int y {0}; y < Map::dimension.height; ++y) {
-        for (int x {0}; x < Map::dimension.width; ++x) {
+    for (int y {0}; y < m_map.dimension().height; ++y) {
+        for (int x {0}; x < m_map.dimension().width; ++x) {
             const Point point {x, y};
 
             switch (m_map.tile_at(point)) {

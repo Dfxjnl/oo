@@ -22,18 +22,18 @@ auto Map::tile_at(const Point position) const -> TileType
     return m_tiles.at(index(position));
 }
 
-auto Map::index(const Point position) -> std::size_t
+auto Map::index(const Point position) const -> std::size_t
 {
-    if (position.x < 0 || position.x >= dimension.width || position.y < 0
-        || position.y >= dimension.height)
+    if (position.x < 0 || position.x >= m_dimension.width || position.y < 0
+        || position.y >= m_dimension.height)
     {
         throw std::out_of_range(fmt::format("{}: Out of range: position: {}, dimension: {}",
                                             std::source_location::current().function_name(),
                                             position,
-                                            dimension));
+                                            m_dimension));
     }
 
-    return static_cast<std::size_t>(position.y) * static_cast<std::size_t>(dimension.width)
+    return static_cast<std::size_t>(position.y) * static_cast<std::size_t>(m_dimension.width)
         + static_cast<std::size_t>(position.x);
 }
 } // namespace oo
