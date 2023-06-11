@@ -29,6 +29,8 @@ add_library(
   src/game.cpp
   src/game.hpp
   src/graphics_backend.hpp
+  src/input_manager.cpp
+  src/input_manager.hpp
   src/map.cpp
   src/map.hpp
   src/point.hpp

@@ -1,7 +1,6 @@
 #ifndef OO_SDL_BACKEND_HPP
 #define OO_SDL_BACKEND_HPP
 
-#include <SDL2/SDL.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_video.h>
 
@@ -13,6 +12,7 @@
 
 namespace oo
 {
+class InputManager;
 struct Glyph;
 
 namespace sdl
@@ -42,6 +42,7 @@ public:
     ~SDLBackend() override;
 
     void draw(std::span<const Glyph> screen) override;
+    void poll_inputs(InputManager& input_manager) override;
 
     [[nodiscard]] constexpr auto console_size() const noexcept -> Dimension override
     {

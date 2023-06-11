@@ -2,12 +2,14 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_error.h>
+#include <SDL2/SDL_events.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_surface.h>
 #include <SDL2/SDL_video.h>
+#include <SDL_keycode.h>
 #include <fmt/core.h>
 
 #include <cstddef>
@@ -17,11 +19,25 @@
 
 #include "color.hpp"
 #include "dimension.hpp"
+#include "input_manager.hpp"
 #include "point.hpp"
 #include "terminal.hpp"
 
 namespace oo
 {
+namespace
+{
+auto translate_keycode(const SDL_Event& event) noexcept -> input::Key
+{
+    switch (event.key.keysym.sym) {
+    case SDLK_q:
+        return input::Key::Q;
+    }
+
+    return input::Key::None;
+}
+} // namespace
+
 SDLBackend::SDLBackend()
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -117,5 +133,16 @@ void SDLBackend::draw(const std::span<const Glyph> screen)
     }
 
     SDL_RenderPresent(m_renderer.get());
+}
+
+void SDLBackend::poll_inputs(InputManager& input_manager)
+{
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event) != 0) {
+        if (event.type == SDL_KEYDOWN) {
+            input_manager.on_command(translate_keycode(event));
+        }
+    }
 }
 } // namespace oo

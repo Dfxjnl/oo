@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "graphics_backend.hpp"
+#include "input_manager.hpp"
 #include "map.hpp"
 #include "terminal.hpp"
 
@@ -19,8 +20,13 @@ public:
 private:
     void render();
 
+    void handle_input();
+
     std::unique_ptr<GraphicsBackend> m_backend {nullptr};
     Terminal m_terminal;
+    InputManager m_input_manager;
+
+    bool m_running {true};
 
     Map m_map;
 };
