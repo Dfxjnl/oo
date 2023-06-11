@@ -29,11 +29,14 @@ add_library(
   src/game.cpp
   src/game.hpp
   src/graphics_backend.hpp
+  src/map.cpp
+  src/map.hpp
   src/point.hpp
   src/sdl_backend.cpp
   src/sdl_backend.hpp
   src/terminal.cpp
   src/terminal.hpp
+  src/tile.hpp
 )
 
 target_compile_features(oo_lib PUBLIC cxx_std_20)

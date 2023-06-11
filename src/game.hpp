@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "graphics_backend.hpp"
+#include "map.hpp"
 #include "terminal.hpp"
 
 namespace oo
@@ -16,8 +17,12 @@ public:
     void run();
 
 private:
+    void render();
+
     std::unique_ptr<GraphicsBackend> m_backend {nullptr};
     Terminal m_terminal;
+
+    Map m_map;
 };
 } // namespace oo
 
