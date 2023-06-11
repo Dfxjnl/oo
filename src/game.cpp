@@ -26,6 +26,13 @@ Game::Game()
     m_map.set_tile({5, 6}, TileType::Wall);
     m_map.set_tile({5, 7}, TileType::Wall);
     m_map.set_tile({5, 8}, TileType::Wall);
+
+    for (int i {0}; i < 30; ++i) {
+        m_colonists.emplace_back(Point {i + 10, 8});
+        m_colonists.emplace_back(Point {i + 10, 9});
+        m_colonists.emplace_back(Point {i + 10, 10});
+        m_colonists.emplace_back(Point {i + 10, 11});
+    }
 }
 
 void Game::run()
@@ -55,7 +62,14 @@ void Game::render()
 {
     m_terminal.clear();
 
-    // Render the map.
+    render_map();
+    render_colonists();
+
+    m_backend->draw(m_terminal.glyphs());
+}
+
+void Game::render_map()
+{
     for (int y {0}; y < m_map.dimension().height; ++y) {
         for (int x {0}; x < m_map.dimension().width; ++x) {
             const Point point {x, y};
@@ -71,8 +85,13 @@ void Game::render()
             }
         }
     }
+}
 
-    m_backend->draw(m_terminal.glyphs());
+void Game::render_colonists()
+{
+    for (const auto& colonist : m_colonists) {
+        m_terminal.write(colonist.position(), '@', colors::yellow);
+    }
 }
 
 void Game::handle_input()

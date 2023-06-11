@@ -2,7 +2,9 @@
 #define OO_GAME_HPP
 
 #include <memory>
+#include <vector>
 
+#include "colonist.hpp"
 #include "graphics_backend.hpp"
 #include "input_manager.hpp"
 #include "map.hpp"
@@ -19,6 +21,8 @@ public:
 
 private:
     void render();
+    void render_map();
+    void render_colonists();
 
     void handle_input();
 
@@ -29,6 +33,7 @@ private:
     bool m_running {true};
 
     Map m_map;
+    std::vector<Colonist> m_colonists;
 };
 } // namespace oo
 
