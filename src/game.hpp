@@ -26,6 +26,8 @@ private:
 
     void handle_input();
 
+    void update();
+
     std::unique_ptr<GraphicsBackend> m_backend {nullptr};
     Terminal m_terminal;
     InputManager m_input_manager;

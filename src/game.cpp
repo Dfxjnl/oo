@@ -43,6 +43,7 @@ void Game::run()
     while (m_running) {
         const auto start_time {std::chrono::high_resolution_clock::now()};
 
+        update();
         handle_input();
         render();
 
@@ -101,6 +102,13 @@ void Game::handle_input()
 
     if (m_input_manager.is_key_down(input::Key::Q)) {
         m_running = false;
+    }
+}
+
+void Game::update()
+{
+    for (auto& colonist : m_colonists) {
+        colonist.update();
     }
 }
 } // namespace oo
