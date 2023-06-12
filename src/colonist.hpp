@@ -3,10 +3,11 @@
 
 #include "energy.hpp"
 #include "point.hpp"
-#include "rng.hpp"
 
 namespace oo
 {
+class Rng;
+
 class Colonist
 {
 public:
@@ -16,12 +17,15 @@ public:
     {
     }
 
-    void update();
+    [[nodiscard]] constexpr auto can_take_turn() const noexcept { return m_energy.can_take_turn(); }
+
+    auto gain_energy() -> bool;
+    void take_turn();
 
     [[nodiscard]] constexpr auto position() const noexcept { return m_position; }
 
 private:
-    void take_turn();
+    constexpr void move(const Point offset) noexcept { m_position += offset; }
 
     Point m_position;
     Energy m_energy;

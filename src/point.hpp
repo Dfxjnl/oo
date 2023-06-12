@@ -7,6 +7,13 @@ namespace oo
 {
 struct Point
 {
+    constexpr auto operator+=(const Point other) noexcept
+    {
+        x += other.x;
+        y += other.y;
+        return *this;
+    }
+
     int x {0};
     int y {0};
 };

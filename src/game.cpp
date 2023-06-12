@@ -91,7 +91,7 @@ void Game::render_map()
 void Game::render_colonists()
 {
     for (const auto& colonist : m_colonists) {
-        m_terminal.write(colonist.position(), '@', colors::yellow);
+        m_terminal.write(colonist.position(), '@', colors::gray);
     }
 }
 
@@ -108,7 +108,9 @@ void Game::handle_input()
 void Game::update()
 {
     for (auto& colonist : m_colonists) {
-        colonist.update();
+        if (colonist.gain_energy()) {
+            colonist.take_turn();
+        }
     }
 }
 } // namespace oo

@@ -8,7 +8,7 @@ class Energy
 public:
     [[nodiscard]] constexpr auto can_take_turn() const noexcept { return m_energy >= action_cost; }
 
-    constexpr auto update() noexcept
+    constexpr auto gain() noexcept
     {
         ++m_energy;
 

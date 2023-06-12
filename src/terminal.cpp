@@ -3,7 +3,6 @@
 #include <fmt/core.h>
 
 #include <cstddef>
-#include <functional>
 #include <source_location>
 #include <stdexcept>
 #include <string_view>

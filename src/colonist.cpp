@@ -1,12 +1,12 @@
 #include "colonist.hpp"
 
+#include "rng.hpp"
+
 namespace oo
 {
-void Colonist::update()
+auto Colonist::gain_energy() -> bool
 {
-    if (m_energy.update()) {
-        take_turn();
-    }
+    return m_energy.gain();
 }
 
 void Colonist::take_turn()
@@ -14,25 +14,25 @@ void Colonist::take_turn()
     switch (m_rng->get(0, 3)) {
     case 0: {
         if (m_position.y > 0) {
-            --m_position.y;
+            move({0, -1});
         }
     } break;
 
     case 1: {
         if (m_position.y < 19) {
-            ++m_position.y;
+            move({0, 1});
         }
     } break;
 
     case 2: {
         if (m_position.x > 0) {
-            --m_position.x;
+            move({-1, 0});
         }
     } break;
 
     case 3: {
         if (m_position.x < 49) {
-            ++m_position.x;
+            move({1, 0});
         }
     } break;
     }
