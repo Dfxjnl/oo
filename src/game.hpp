@@ -8,6 +8,7 @@
 #include "graphics_backend.hpp"
 #include "input_manager.hpp"
 #include "map.hpp"
+#include "rng.hpp"
 #include "terminal.hpp"
 
 namespace oo
@@ -31,6 +32,7 @@ private:
     std::unique_ptr<GraphicsBackend> m_backend {nullptr};
     Terminal m_terminal;
     InputManager m_input_manager;
+    Rng m_rng;
 
     bool m_running {true};
 

@@ -37,6 +37,8 @@ add_library(
   src/map.cpp
   src/map.hpp
   src/point.hpp
+  src/rng.cpp
+  src/rng.hpp
   src/sdl_backend.cpp
   src/sdl_backend.hpp
   src/terminal.cpp

@@ -3,14 +3,16 @@
 
 #include "energy.hpp"
 #include "point.hpp"
+#include "rng.hpp"
 
 namespace oo
 {
 class Colonist
 {
 public:
-    explicit Colonist(const Point position)
+    Colonist(const Point position, Rng& rng)
         : m_position {position}
+        , m_rng {&rng}
     {
     }
 
@@ -23,6 +25,8 @@ private:
 
     Point m_position;
     Energy m_energy;
+
+    Rng* m_rng {nullptr};
 };
 } // namespace oo
 

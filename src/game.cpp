@@ -28,10 +28,10 @@ Game::Game()
     m_map.set_tile({5, 8}, TileType::Wall);
 
     for (int i {0}; i < 30; ++i) {
-        m_colonists.emplace_back(Point {i + 10, 8});
-        m_colonists.emplace_back(Point {i + 10, 9});
-        m_colonists.emplace_back(Point {i + 10, 10});
-        m_colonists.emplace_back(Point {i + 10, 11});
+        m_colonists.emplace_back(Point {i + 10, 8}, m_rng);
+        m_colonists.emplace_back(Point {i + 10, 9}, m_rng);
+        m_colonists.emplace_back(Point {i + 10, 10}, m_rng);
+        m_colonists.emplace_back(Point {i + 10, 11}, m_rng);
     }
 }
 
