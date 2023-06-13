@@ -10,6 +10,7 @@
 #include <thread>
 
 #include "action.hpp"
+#include "colonist.hpp"
 #include "color.hpp"
 #include "dimension.hpp"
 #include "input_manager.hpp"
@@ -35,10 +36,10 @@ Game::Game()
     m_log.add("Repeated.");
     m_log.add("Repeated.");
 
-    m_map.set_tile({5, 10}, TileType::Wall);
-    m_map.set_tile({5, 11}, TileType::Wall);
-    m_map.set_tile({5, 12}, TileType::Wall);
-    m_map.set_tile({5, 13}, TileType::Wall);
+    m_map.set_tile({5, 10}, TileType::Tree);
+    m_map.set_tile({5, 11}, TileType::Tree);
+    m_map.set_tile({5, 12}, TileType::Tree);
+    m_map.set_tile({5, 13}, TileType::Tree);
 
     for (int i {0}; i < 30; ++i) {
         m_colonists.emplace_back(Point {i + 10, 8}, m_rng);
@@ -91,12 +92,12 @@ void Game::render_map()
             const Point point {x, y};
 
             switch (m_map.tile_at(point)) {
-            case TileType::Floor: {
-                m_terminal.write(point, '.', colors::dark_gray);
+            case TileType::Grass: {
+                m_terminal.write(point, '.', colors::green);
             } break;
 
-            case TileType::Wall: {
-                m_terminal.write(point, '#', colors::white);
+            case TileType::Tree: {
+                m_terminal.write(point, '&', colors::orange);
             } break;
             }
         }
@@ -106,7 +107,7 @@ void Game::render_map()
 void Game::render_colonists()
 {
     for (const auto& colonist : m_colonists) {
-        m_terminal.write(colonist.position(), '@', colors::gray);
+        m_terminal.write(colonist.position(), Colonist::glyph);
     }
 }
 

@@ -52,6 +52,6 @@ auto Colonist::can_occupy(const Map& map, const Point position) -> bool
         return false;
     }
 
-    return map.tile_at(position) == TileType::Floor;
+    return map.tile_at(position) == TileType::Grass;
 }
 } // namespace oo

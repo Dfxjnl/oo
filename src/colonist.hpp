@@ -15,6 +15,8 @@ class Rng;
 class Colonist
 {
 public:
+    static constexpr char glyph {'@'};
+
     Colonist(const Point position, Rng& rng)
         : m_position {position}
         , m_rng {&rng}

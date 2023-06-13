@@ -5,8 +5,8 @@ namespace oo
 {
 enum class TileType
 {
-    Floor,
-    Wall
+    Grass,
+    Tree
 };
 } // namespace oo
 

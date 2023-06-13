@@ -16,7 +16,7 @@ void MoveAction::perform(Game& game)
     if (Colonist::can_occupy(game.map(), destination)) {
         m_colonist->move(m_offset);
     } else {
-        game.log().add(fmt::format("{} hit a wall.", fmt::ptr(m_colonist)));
+        game.log().add(fmt::format("{} hit a tree.", fmt::ptr(m_colonist)));
     }
 }
 } // namespace oo
