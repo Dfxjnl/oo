@@ -1,7 +1,10 @@
 #include "game.hpp"
 
+#include <fmt/core.h>
+
 #include <chrono>
 #include <compare>
+#include <deque>
 #include <memory>
 #include <ratio>
 #include <thread>
@@ -22,10 +25,14 @@ Game::Game()
     , m_terminal {m_backend->console_size()}
     , m_map {m_backend->console_size()}
 {
-    m_map.set_tile({5, 5}, TileType::Wall);
-    m_map.set_tile({5, 6}, TileType::Wall);
-    m_map.set_tile({5, 7}, TileType::Wall);
-    m_map.set_tile({5, 8}, TileType::Wall);
+    m_log.add("Welcome!");
+    m_log.add("Repeated.");
+    m_log.add("Repeated.");
+
+    m_map.set_tile({5, 10}, TileType::Wall);
+    m_map.set_tile({5, 11}, TileType::Wall);
+    m_map.set_tile({5, 12}, TileType::Wall);
+    m_map.set_tile({5, 13}, TileType::Wall);
 
     for (int i {0}; i < 30; ++i) {
         m_colonists.emplace_back(Point {i + 10, 8}, m_rng);
@@ -65,6 +72,7 @@ void Game::render()
 
     render_map();
     render_colonists();
+    render_log();
 
     m_backend->draw(m_terminal.glyphs());
 }
@@ -92,6 +100,23 @@ void Game::render_colonists()
 {
     for (const auto& colonist : m_colonists) {
         m_terminal.write(colonist.position(), '@', colors::gray);
+    }
+}
+
+void Game::render_log()
+{
+    int y_offset {m_terminal.dimension().height - static_cast<int>(m_log.messages().size())};
+
+    for (const auto& message : m_log.messages()) {
+        m_terminal.write({0, y_offset}, message.text);
+
+        if (message.count > 1) {
+            m_terminal.write({static_cast<int>(message.text.length()), y_offset},
+                             fmt::format("x{}", message.count),
+                             colors::gray);
+        }
+
+        ++y_offset;
     }
 }
 

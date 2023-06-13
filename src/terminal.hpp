@@ -47,6 +47,8 @@ public:
         return m_glyphs;
     }
 
+    [[nodiscard]] constexpr auto dimension() const noexcept { return m_dimension; }
+
 private:
     [[nodiscard]] auto index(Point position) const -> std::size_t;
 

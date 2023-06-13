@@ -34,6 +34,8 @@ add_library(
   src/graphics_backend.hpp
   src/input_manager.cpp
   src/input_manager.hpp
+  src/log.cpp
+  src/log.hpp
   src/map.cpp
   src/map.hpp
   src/point.hpp
