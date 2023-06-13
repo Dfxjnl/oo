@@ -21,10 +21,15 @@
 
 namespace oo
 {
+namespace
+{
+constexpr int stats_offset {20};
+}
+
 Game::Game()
     : m_backend {std::make_unique<SDLBackend>()}
     , m_terminal {m_backend->console_size()}
-    , m_map {m_backend->console_size()}
+    , m_map {{m_backend->console_size().width - stats_offset - 1, m_backend->console_size().height}}
 {
     m_log.add("Welcome!");
     m_log.add("Repeated.");
@@ -73,6 +78,7 @@ void Game::render()
 
     render_map();
     render_colonists();
+    render_stats();
     render_log();
 
     m_backend->draw(m_terminal.glyphs());
@@ -119,6 +125,14 @@ void Game::render_log()
 
         ++y_offset;
     }
+}
+
+void Game::render_stats()
+{
+    m_terminal.write({m_terminal.dimension().width - stats_offset, 1}, "Colony");
+
+    m_terminal.write({m_terminal.dimension().width - stats_offset, 4},
+                     fmt::format("{} colonists", m_colonists.size()));
 }
 
 void Game::handle_input()

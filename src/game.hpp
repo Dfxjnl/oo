@@ -30,6 +30,7 @@ private:
     void render_map();
     void render_colonists();
     void render_log();
+    void render_stats();
 
     void handle_input();
 
