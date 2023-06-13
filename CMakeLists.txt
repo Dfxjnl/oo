@@ -24,6 +24,8 @@ find_package(SDL2_image CONFIG REQUIRED)
 # Declare library.
 add_library(
   oo_lib OBJECT
+  src/action.cpp
+  src/action.hpp
   src/colonist.cpp
   src/colonist.hpp
   src/color.hpp

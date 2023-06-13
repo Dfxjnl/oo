@@ -9,6 +9,7 @@
 #include <ratio>
 #include <thread>
 
+#include "action.hpp"
 #include "color.hpp"
 #include "dimension.hpp"
 #include "input_manager.hpp"
@@ -134,7 +135,8 @@ void Game::update()
 {
     for (auto& colonist : m_colonists) {
         if (colonist.gain_energy()) {
-            colonist.take_turn();
+            const auto action {colonist.take_turn()};
+            action->perform();
         }
     }
 }
