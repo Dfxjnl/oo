@@ -136,7 +136,7 @@ void Game::update()
     for (auto& colonist : m_colonists) {
         if (colonist.gain_energy()) {
             const auto action {colonist.take_turn()};
-            action->perform();
+            action->perform(*this);
         }
     }
 }

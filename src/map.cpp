@@ -22,11 +22,15 @@ auto Map::tile_at(const Point position) const -> TileType
     return m_tiles.at(index(position));
 }
 
+auto Map::inbounds(const Point position) const -> bool
+{
+    return position.x >= 0 || position.x < m_dimension.width || position.y >= 0
+        || position.y < m_dimension.height;
+}
+
 auto Map::index(const Point position) const -> std::size_t
 {
-    if (position.x < 0 || position.x >= m_dimension.width || position.y < 0
-        || position.y >= m_dimension.height)
-    {
+    if (!inbounds(position)) {
         throw std::out_of_range(fmt::format("{}: Out of range: position: {}, dimension: {}",
                                             std::source_location::current().function_name(),
                                             position,

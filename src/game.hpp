@@ -21,6 +21,10 @@ public:
 
     void run();
 
+    [[nodiscard]] constexpr auto map() const noexcept -> const Map& { return m_map; }
+
+    [[nodiscard]] constexpr auto log() noexcept -> Log& { return m_log; }
+
 private:
     void render();
     void render_map();

@@ -6,6 +6,7 @@
 namespace oo
 {
 class Colonist;
+class Game;
 
 class Action
 {
@@ -17,7 +18,7 @@ public:
     constexpr auto operator=(Action&&) -> Action& = default;
     constexpr virtual ~Action() = default;
 
-    virtual void perform() = 0;
+    virtual void perform(Game& game) = 0;
 };
 
 class MoveAction : public Action
@@ -29,7 +30,7 @@ public:
     {
     }
 
-    void perform() override;
+    void perform(Game& game) override;
 
 private:
     Colonist* m_colonist {nullptr};

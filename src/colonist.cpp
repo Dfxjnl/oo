@@ -3,8 +3,10 @@
 #include <memory>
 
 #include "action.hpp"
+#include "map.hpp"
 #include "point.hpp"
 #include "rng.hpp"
+#include "tile.hpp"
 
 namespace oo
 {
@@ -42,5 +44,14 @@ auto Colonist::take_turn() -> std::unique_ptr<Action>
     }
 
     return std::make_unique<MoveAction>(*this, Point {0, 0});
+}
+
+auto Colonist::can_occupy(const Map& map, const Point position) -> bool
+{
+    if (!map.inbounds(position)) {
+        return false;
+    }
+
+    return map.tile_at(position) == TileType::Floor;
 }
 } // namespace oo

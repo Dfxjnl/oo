@@ -9,6 +9,7 @@
 namespace oo
 {
 class Action;
+class Map;
 class Rng;
 
 class Colonist
@@ -20,14 +21,16 @@ public:
     {
     }
 
-    [[nodiscard]] constexpr auto can_take_turn() const noexcept { return m_energy.can_take_turn(); }
-
     auto gain_energy() -> bool;
     auto take_turn() -> std::unique_ptr<Action>;
 
-    [[nodiscard]] constexpr auto position() const noexcept { return m_position; }
-
     constexpr void move(const Point offset) noexcept { m_position += offset; }
+
+    [[nodiscard]] constexpr auto can_take_turn() const noexcept { return m_energy.can_take_turn(); }
+
+    [[nodiscard]] static auto can_occupy(const Map& map, Point position) -> bool;
+
+    [[nodiscard]] constexpr auto position() const noexcept { return m_position; }
 
 private:
     Point m_position;

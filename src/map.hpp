@@ -25,6 +25,8 @@ public:
 
     [[nodiscard]] constexpr auto dimension() const noexcept { return m_dimension; }
 
+    [[nodiscard]] auto inbounds(Point position) const -> bool;
+
 private:
     [[nodiscard]] auto index(Point position) const -> std::size_t;
 

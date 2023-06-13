@@ -17,6 +17,11 @@ struct Point
     int x {0};
     int y {0};
 };
+
+constexpr auto operator+(const Point lhs, const Point rhs) noexcept -> Point
+{
+    return {lhs.x + rhs.x, lhs.y + rhs.y};
+}
 } // namespace oo
 
 template <>
