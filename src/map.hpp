@@ -5,12 +5,11 @@
 #include <vector>
 
 #include "dimension.hpp"
+#include "point.hpp"
+#include "tile.hpp"
 
 namespace oo
 {
-enum class TileType;
-struct Point;
-
 class Map
 {
 public:
@@ -21,16 +20,24 @@ public:
     }
 
     void set_tile(Point position, TileType type);
-    [[nodiscard]] auto tile_at(Point position) const -> TileType;
+    [[nodiscard]] auto tile_at(Point position) const -> const Tile&;
+
+    [[nodiscard]] auto can_occupy(Point position) const -> bool;
+
+    void make_radius_visible(Point position, int radius);
 
     [[nodiscard]] constexpr auto dimension() const noexcept { return m_dimension; }
 
-    [[nodiscard]] auto inbounds(Point position) const -> bool;
+    [[nodiscard]] constexpr auto inbounds(const Point position) const noexcept -> bool
+    {
+        return position.x >= 0 && position.x < m_dimension.width && position.y >= 0
+            && position.y < m_dimension.height;
+    }
 
 private:
     [[nodiscard]] auto index(Point position) const -> std::size_t;
 
-    std::vector<TileType> m_tiles {};
+    std::vector<Tile> m_tiles;
     Dimension m_dimension;
 };
 } // namespace oo

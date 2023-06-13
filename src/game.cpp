@@ -32,20 +32,16 @@ Game::Game()
     , m_terminal {m_backend->console_size()}
     , m_map {{m_backend->console_size().width - stats_offset - 1, m_backend->console_size().height}}
 {
-    m_log.add("Welcome!");
-    m_log.add("Repeated.");
-    m_log.add("Repeated.");
-
     m_map.set_tile({5, 10}, TileType::Tree);
     m_map.set_tile({5, 11}, TileType::Tree);
     m_map.set_tile({5, 12}, TileType::Tree);
     m_map.set_tile({5, 13}, TileType::Tree);
 
     for (int i {0}; i < 30; ++i) {
-        m_colonists.emplace_back(Point {i + 10, 8}, m_rng);
-        m_colonists.emplace_back(Point {i + 10, 9}, m_rng);
-        m_colonists.emplace_back(Point {i + 10, 10}, m_rng);
-        m_colonists.emplace_back(Point {i + 10, 11}, m_rng);
+        m_colonists.emplace_back(Point {i + 10, 8}, *this);
+        m_colonists.emplace_back(Point {i + 10, 9}, *this);
+        m_colonists.emplace_back(Point {i + 10, 10}, *this);
+        m_colonists.emplace_back(Point {i + 10, 11}, *this);
     }
 }
 
@@ -90,15 +86,20 @@ void Game::render_map()
     for (int y {0}; y < m_map.dimension().height; ++y) {
         for (int x {0}; x < m_map.dimension().width; ++x) {
             const Point point {x, y};
+            const auto& tile {m_map.tile_at(point)};
 
-            switch (m_map.tile_at(point)) {
-            case TileType::Grass: {
-                m_terminal.write(point, '.', colors::green);
-            } break;
+            if (tile.explored) {
+                switch (tile.type) {
+                case TileType::Grass: {
+                    m_terminal.write(point, '.', tile.visible ? colors::green : colors::dark_gray);
+                } break;
 
-            case TileType::Tree: {
-                m_terminal.write(point, '&', colors::orange);
-            } break;
+                case TileType::Tree: {
+                    m_terminal.write(point, '&', tile.visible ? colors::orange : colors::dark_gray);
+                } break;
+                }
+            } else {
+                m_terminal.write(point, ' ');
             }
         }
     }
@@ -148,11 +149,20 @@ void Game::handle_input()
 
 void Game::update()
 {
+    update_fov();
+
     for (auto& colonist : m_colonists) {
         if (colonist.gain_energy()) {
             const auto action {colonist.take_turn()};
             action->perform(*this);
         }
+    }
+}
+
+void Game::update_fov()
+{
+    for (auto& colonist : m_colonists) {
+        m_map.make_radius_visible(colonist.position(), 8);
     }
 }
 } // namespace oo

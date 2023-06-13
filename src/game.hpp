@@ -25,6 +25,8 @@ public:
 
     [[nodiscard]] constexpr auto log() noexcept -> Log& { return m_log; }
 
+    [[nodiscard]] constexpr auto rng() noexcept -> Rng& { return m_rng; }
+
 private:
     void render();
     void render_map();
@@ -35,6 +37,7 @@ private:
     void handle_input();
 
     void update();
+    void update_fov();
 
     std::unique_ptr<GraphicsBackend> m_backend {nullptr};
     Terminal m_terminal;

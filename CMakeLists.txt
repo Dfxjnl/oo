@@ -33,6 +33,8 @@ add_library(
   src/energy.hpp
   src/game.cpp
   src/game.hpp
+  src/geometry.cpp
+  src/geometry.hpp
   src/graphics_backend.hpp
   src/input_manager.cpp
   src/input_manager.hpp

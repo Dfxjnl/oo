@@ -6,26 +6,47 @@
 #include <source_location>
 #include <stdexcept>
 
+#include "geometry.hpp"
 #include "point.hpp"
 
 namespace oo
 {
-enum class TileType;
-
 void Map::set_tile(const Point position, const TileType type)
 {
-    m_tiles.at(index(position)) = type;
+    m_tiles.at(index(position)).type = type;
 }
 
-auto Map::tile_at(const Point position) const -> TileType
+auto Map::tile_at(const Point position) const -> const Tile&
 {
     return m_tiles.at(index(position));
 }
 
-auto Map::inbounds(const Point position) const -> bool
+auto Map::can_occupy(const Point position) const -> bool
 {
-    return position.x >= 0 || position.x < m_dimension.width || position.y >= 0
-        || position.y < m_dimension.height;
+    if (!inbounds(position)) {
+        return false;
+    }
+
+    return tile_at(position).type == TileType::Grass;
+}
+
+void Map::make_radius_visible(const Point position, const int radius)
+{
+    m_tiles.at(index(position)).visible = true;
+    m_tiles.at(index(position)).explored = true;
+
+    for (int angle {0}; angle < 360; ++angle) {
+        const auto destination {project_angle(position, radius, angle)};
+        line_function(position,
+                      destination,
+                      [this](const Point target)
+                      {
+                          if (inbounds(target)) {
+                              m_tiles.at(index(target)).visible = true;
+                              m_tiles.at(index(target)).explored = true;
+                          }
+                      });
+    }
 }
 
 auto Map::index(const Point position) const -> std::size_t

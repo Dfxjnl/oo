@@ -9,17 +9,16 @@
 namespace oo
 {
 class Action;
-class Map;
-class Rng;
+class Game;
 
 class Colonist
 {
 public:
     static constexpr char glyph {'@'};
 
-    Colonist(const Point position, Rng& rng)
+    Colonist(const Point position, Game& game)
         : m_position {position}
-        , m_rng {&rng}
+        , m_game {&game}
     {
     }
 
@@ -30,15 +29,13 @@ public:
 
     [[nodiscard]] constexpr auto can_take_turn() const noexcept { return m_energy.can_take_turn(); }
 
-    [[nodiscard]] static auto can_occupy(const Map& map, Point position) -> bool;
-
     [[nodiscard]] constexpr auto position() const noexcept { return m_position; }
 
 private:
     Point m_position;
     Energy m_energy;
 
-    Rng* m_rng {nullptr};
+    Game* m_game {nullptr};
 };
 } // namespace oo
 
