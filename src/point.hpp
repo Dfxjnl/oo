@@ -3,10 +3,14 @@
 
 #include <fmt/format.h>
 
+#include <compare>
+
 namespace oo
 {
 struct Point
 {
+    constexpr auto operator<=>(const Point&) const = default;
+
     constexpr auto operator+=(const Point other) noexcept
     {
         x += other.x;

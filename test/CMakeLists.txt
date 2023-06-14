@@ -9,7 +9,14 @@ find_package(doctest CONFIG REQUIRED)
 include(doctest)
 
 # Tests.
-add_executable(oo_test src/oo_test.cpp src/color.cpp src/dimension.cpp src/log.cpp src/terminal.cpp)
+add_executable(oo_test src/oo_test.cpp
+  src/color.cpp
+  src/dimension.cpp
+  src/geometry.cpp
+  src/log.cpp
+  src/terminal.cpp
+)
+
 target_compile_features(oo_test PRIVATE cxx_std_20)
 target_link_libraries(oo_test PRIVATE oo_lib doctest::doctest)
 

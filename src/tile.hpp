@@ -17,7 +17,7 @@ struct Tile
             explored = true;
         }
 
-        visible = true;
+        visible = value;
     }
 
     TileType type {TileType::Grass};
