@@ -49,6 +49,8 @@ private:
 
     Map m_map;
     std::vector<Colonist> m_colonists;
+
+    bool m_visibility_dirty {true};
 };
 } // namespace oo
 

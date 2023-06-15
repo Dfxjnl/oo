@@ -155,14 +155,19 @@ void Game::update()
         if (colonist.gain_energy()) {
             const auto action {colonist.take_turn()};
             action->perform(*this);
+            m_visibility_dirty = true;
         }
     }
 }
 
 void Game::update_fov()
 {
-    for (auto& colonist : m_colonists) {
-        m_map.make_radius_visible(colonist.position(), 8);
+    if (m_visibility_dirty) {
+        m_map.reset_visibility();
+
+        for (auto& colonist : m_colonists) {
+            m_map.make_radius_visible(colonist.position(), 8);
+        }
     }
 }
 } // namespace oo

@@ -24,7 +24,7 @@ auto Colonist::take_turn() -> std::unique_ptr<Action>
     } break;
 
     case 1: {
-        if (m_position.y < 19) {
+        if (m_position.y < m_game->map().dimension().height) {
             return std::make_unique<MoveAction>(*this, Point {0, 1});
         }
     } break;
@@ -36,7 +36,7 @@ auto Colonist::take_turn() -> std::unique_ptr<Action>
     } break;
 
     case 3: {
-        if (m_position.x < 49) {
+        if (m_position.x < m_game->map().dimension().width) {
             return std::make_unique<MoveAction>(*this, Point {1, 0});
         }
     } break;

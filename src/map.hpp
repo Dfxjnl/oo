@@ -24,6 +24,7 @@ public:
 
     [[nodiscard]] auto can_occupy(Point position) const -> bool;
 
+    void reset_visibility();
     void make_radius_visible(Point position, int radius);
 
     [[nodiscard]] constexpr auto dimension() const noexcept { return m_dimension; }

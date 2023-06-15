@@ -30,10 +30,16 @@ auto Map::can_occupy(const Point position) const -> bool
     return tile_at(position).type == TileType::Grass;
 }
 
+void Map::reset_visibility()
+{
+    for (auto& tile : m_tiles) {
+        tile.visible = false;
+    }
+}
+
 void Map::make_radius_visible(const Point position, const int radius)
 {
-    m_tiles.at(index(position)).visible = true;
-    m_tiles.at(index(position)).explored = true;
+    m_tiles.at(index(position)).set_visible(true);
 
     for (int angle {0}; angle < 360; ++angle) {
         const auto destination {project_angle(position, radius, angle)};
@@ -42,8 +48,7 @@ void Map::make_radius_visible(const Point position, const int radius)
                       [this](const Point target)
                       {
                           if (inbounds(target)) {
-                              m_tiles.at(index(target)).visible = true;
-                              m_tiles.at(index(target)).explored = true;
+                              m_tiles.at(index(target)).set_visible(true);
                           }
                       });
     }
