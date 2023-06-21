@@ -2,9 +2,8 @@
 #define OO_GAME_HPP
 
 #include <memory>
-#include <vector>
 
-#include "colonist.hpp"
+#include "avatar.hpp"
 #include "graphics_backend.hpp"
 #include "input_manager.hpp"
 #include "log.hpp"
@@ -48,7 +47,7 @@ private:
     bool m_running {true};
 
     Map m_map;
-    std::vector<Colonist> m_colonists;
+    Avatar m_avatar;
 
     bool m_visibility_dirty {true};
 };

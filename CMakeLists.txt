@@ -26,8 +26,8 @@ add_library(
   oo_lib OBJECT
   src/action.cpp
   src/action.hpp
-  src/colonist.cpp
-  src/colonist.hpp
+  src/avatar.cpp
+  src/avatar.hpp
   src/color.hpp
   src/dimension.hpp
   src/energy.hpp

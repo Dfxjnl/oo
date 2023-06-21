@@ -30,6 +30,18 @@ namespace
 auto translate_keycode(const SDL_Event& event) noexcept -> input::Key
 {
     switch (event.key.keysym.sym) {
+    case SDLK_UP:
+        return input::Key::Up;
+
+    case SDLK_DOWN:
+        return input::Key::Down;
+
+    case SDLK_LEFT:
+        return input::Key::Left;
+
+    case SDLK_RIGHT:
+        return input::Key::Right;
+
     case SDLK_q:
         return input::Key::Q;
     }

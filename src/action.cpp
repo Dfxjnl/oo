@@ -3,7 +3,7 @@
 #include <fmt/core.h>
 #include <fmt/format.h>
 
-#include "colonist.hpp"
+#include "avatar.hpp"
 #include "game.hpp"
 #include "log.hpp"
 #include "map.hpp"

@@ -10,7 +10,7 @@
 #include <thread>
 
 #include "action.hpp"
-#include "colonist.hpp"
+#include "avatar.hpp"
 #include "color.hpp"
 #include "dimension.hpp"
 #include "input_manager.hpp"
@@ -31,18 +31,12 @@ Game::Game()
     : m_backend {std::make_unique<SDLBackend>()}
     , m_terminal {m_backend->console_size()}
     , m_map {{m_backend->console_size().width - stats_offset - 1, m_backend->console_size().height}}
+    , m_avatar{{.x = m_backend->console_size().width / 2, .y = m_backend->console_size().height / 2}}
 {
     m_map.set_tile({5, 10}, TileType::Tree);
     m_map.set_tile({5, 11}, TileType::Tree);
     m_map.set_tile({5, 12}, TileType::Tree);
     m_map.set_tile({5, 13}, TileType::Tree);
-
-    for (int i {0}; i < 30; ++i) {
-        m_colonists.emplace_back(Point {i + 10, 8}, *this);
-        m_colonists.emplace_back(Point {i + 10, 9}, *this);
-        m_colonists.emplace_back(Point {i + 10, 10}, *this);
-        m_colonists.emplace_back(Point {i + 10, 11}, *this);
-    }
 }
 
 void Game::run()
@@ -107,9 +101,7 @@ void Game::render_map()
 
 void Game::render_colonists()
 {
-    for (const auto& colonist : m_colonists) {
-        m_terminal.write(colonist.position(), Colonist::glyph);
-    }
+    m_terminal.write(m_avatar.position(), Avatar::glyph);
 }
 
 void Game::render_log()
@@ -131,10 +123,7 @@ void Game::render_log()
 
 void Game::render_stats()
 {
-    m_terminal.write({m_terminal.dimension().width - stats_offset, 1}, "Colony");
-
-    m_terminal.write({m_terminal.dimension().width - stats_offset, 4},
-                     fmt::format("{} colonists", m_colonists.size()));
+    m_terminal.write({m_terminal.dimension().width - stats_offset, 1}, "oo");
 }
 
 void Game::handle_input()
@@ -144,6 +133,14 @@ void Game::handle_input()
 
     if (m_input_manager.is_key_down(input::Key::Q)) {
         m_running = false;
+    } else if (m_input_manager.is_key_down(input::Key::Up)) {
+        m_avatar.set_next_action(std::make_unique<MoveAction>(m_avatar, Point {0, -1}));
+    } else if (m_input_manager.is_key_down(input::Key::Down)) {
+        m_avatar.set_next_action(std::make_unique<MoveAction>(m_avatar, Point {0, 1}));
+    } else if (m_input_manager.is_key_down(input::Key::Left)) {
+        m_avatar.set_next_action(std::make_unique<MoveAction>(m_avatar, Point {-1, 0}));
+    } else if (m_input_manager.is_key_down(input::Key::Right)) {
+        m_avatar.set_next_action(std::make_unique<MoveAction>(m_avatar, Point {1, 0}));
     }
 }
 
@@ -151,12 +148,18 @@ void Game::update()
 {
     update_fov();
 
-    for (auto& colonist : m_colonists) {
-        if (colonist.gain_energy()) {
-            const auto action {colonist.take_turn()};
-            action->perform(*this);
-            m_visibility_dirty = true;
+    if (m_avatar.can_take_turn() && m_avatar.needs_input()) {
+        return;
+    }
+
+    if (m_avatar.gain_energy()) {
+        if (m_avatar.needs_input()) {
+            return;
         }
+
+        const auto action {m_avatar.take_turn()};
+        action->perform(*this);
+        m_visibility_dirty = true;
     }
 }
 
@@ -164,10 +167,7 @@ void Game::update_fov()
 {
     if (m_visibility_dirty) {
         m_map.reset_visibility();
-
-        for (auto& colonist : m_colonists) {
-            m_map.make_radius_visible(colonist.position(), 8);
-        }
+        m_map.make_radius_visible(m_avatar.position(), 8);
     }
 }
 } // namespace oo

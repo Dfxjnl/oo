@@ -5,7 +5,7 @@
 
 namespace oo
 {
-class Colonist;
+class Avatar;
 class Game;
 
 class Action
@@ -24,7 +24,7 @@ public:
 class MoveAction : public Action
 {
 public:
-    constexpr explicit MoveAction(Colonist& colonist, const Point offset)
+    constexpr explicit MoveAction(Avatar& colonist, const Point offset)
         : m_colonist {&colonist}
         , m_offset {offset}
     {
@@ -33,7 +33,7 @@ public:
     void perform(Game& game) override;
 
 private:
-    Colonist* m_colonist {nullptr};
+    Avatar* m_colonist {nullptr};
     Point m_offset;
 };
 } // namespace oo

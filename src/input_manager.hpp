@@ -10,6 +10,10 @@ namespace input
 enum class Key
 {
     None,
+    Up,
+    Down,
+    Left,
+    Right,
     Q
 };
 } // namespace input
